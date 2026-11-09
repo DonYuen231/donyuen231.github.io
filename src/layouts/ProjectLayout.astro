@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import ProblemApproachResult from '../components/ProblemApproachResult.astro';
+import MnistCard from '../components/mnist/MnistCard';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -13,7 +14,6 @@ interface Props {
 const { project, relatedNotes, next, showNotes } = Astro.props;
 const { id, data } = project;
 const label = `Entry ${String(data.entry).padStart(2, '0')}`;
-const hasDemo = data.demo !== 'none';
 ---
 
 <BaseLayout
@@ -36,7 +36,16 @@ const hasDemo = data.demo !== 'none';
       <h1 transition:name={`project-${id}-title`}>{data.title}</h1>
     </header>
 
-    {hasDemo && <div id="demo" class="demo-panel" aria-hidden="true" />}
+    {data.demo === 'mnist' && (
+      <div id="demo">
+        <MnistCard client:visible codeUrl={data.repo} fullDemoHref={null} />
+        <p class="accuracy">
+          98.32% is test-set accuracy, measured on the 10,000 MNIST test images.
+          Digits you draw here are usually harder for the network, because they
+          don't look quite like the scanned digits it trained on.
+        </p>
+      </div>
+    )}
 
     <div class="par">
       <ProblemApproachResult
@@ -113,6 +122,12 @@ const hasDemo = data.demo !== 'none';
   }
   #demo {
     margin-bottom: 32px;
+  }
+  .accuracy {
+    max-width: 72ch;
+    margin: 12px 0 0;
+    font-size: 15px;
+    color: var(--text-muted);
   }
   .par {
     max-width: 72ch;

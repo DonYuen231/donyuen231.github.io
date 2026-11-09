@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BackgroundNote from '../components/BackgroundNote.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import MnistCard from '../components/mnist/MnistCard';
 import { featured, loadSiteContent } from '../lib/content';
 
 const { projects, showNotes } = await loadSiteContent();
@@ -31,7 +32,9 @@ const selected = featured(projects);
         <li>
           {project.data.demo === 'mnist' ? (
             <ProjectCard project={project} variant="full">
-              <div id="demo" class="demo-panel" aria-hidden="true" />
+              <div id="demo">
+                <MnistCard client:visible codeUrl={project.data.repo} />
+              </div>
             </ProjectCard>
           ) : (
             <ProjectCard project={project} variant="full" />

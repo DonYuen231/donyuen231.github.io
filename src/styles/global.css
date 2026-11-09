@@ -120,10 +120,3 @@ a:hover {
 .prose a {
   overflow-wrap: anywhere;
 }
-
-/* Demo panel shell (navy, 6px radius). Demos mount inside it. */
-.demo-panel {
-  min-height: 320px;
-  background: var(--navy);
-  border-radius: var(--radius-demo);
-}
