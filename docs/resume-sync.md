@@ -2,7 +2,9 @@
 
 Read this before you change anything about Don's work history, education, skills, certifications, or projects on this site. The same facts live in several places. If you change one, change all of them in the same session.
 
-Last updated: Nov 9, 2026 (first version of the Experience page, Resume page, and `resume.pdf`).
+Last updated: Nov 9, 2026 (first version of the Experience page, Resume page, and `resume.pdf`; project dates added).
+
+**Paste content only over the content, never over the whole file.** Each page keeps its frontmatter, `BaseLayout`, `<h1>`, and styles, and the resume page keeps its "Download PDF" button. On Nov 9 the whole files were replaced by the fragments by mistake, which removed all of that. If a page has no `<h1>`, the build script stops and says so.
 
 ## Where the facts live
 
@@ -41,7 +43,7 @@ After building, open the PDF and look at it. Then run the site's own checks (`np
 
 1. Add the project's `.mdx` file as usual.
 2. Ask Don if it should go on the resume. The resume shows his strongest 2 projects, or 3 if all of them fit on one page. If it replaces one, ask which.
-3. Add it under `<h2>Projects</h2>` on the resume page: an `<h3>` with the name, a `<p>` with the stack, a link to `/projects/<slug>/`, and a link to the full GitHub URL, then 2 to 4 bullets.
+3. Add it under `<h2>Projects</h2>` on the resume page: an `<h3>` with the name, then a `<p>` with the month and year (for example "Sep 2026 – Nov 2026", from the repo's first and latest commits unless Don gives other dates), the stack, a link to `/projects/<slug>/`, and a link to the full GitHub URL, then 2 to 4 bullets.
 4. Take every number from the repo's README or the `.mdx`. Never round up or add a number that isn't there.
 5. Add any new skills the project proves to the Skills list.
 6. Rebuild the PDF.
@@ -99,7 +101,8 @@ The PDF header is set at the top of `scripts/build-resume-pdf.py` (name, city, e
 
 - Plain semantic HTML only: `<h2>`, `<h3>`, `<p>`, `<ul>`, `<li>`, and `<a href>`. No classes, inline styles, scripts, or Markdown.
 - `<h3>` is "Title, Company" for jobs, "Degree, School" for education, and the project name for projects.
-- The `<p>` right under each job or school `<h3>` holds "Mon YYYY – Mon YYYY · City, ST". For projects, it holds the stack and the links.
+- The `<p>` right under each job or school `<h3>` holds "Mon YYYY – Mon YYYY · City, ST". For projects, it holds the dates, the stack, and the links.
+- Current project dates: Historic Photo Explorer is "Nov 2026" (the repo's dates; it began earlier as a class project, so change it if Don gives that semester). MNIST is "Sep 2026 – Nov 2026" (first and latest commits).
 - Site links are relative (`/projects/<slug>/`). External links are full `https://` URLs.
 - No square-bracket placeholders anywhere. Write "784-128-64-10", not a bracketed list.
 

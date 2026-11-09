@@ -20,7 +20,9 @@ import misclassified from '../../assets/projects/mnist/misclassified.png';
 
 ## Overview
 
-I wrote a handwritten digit classifier with only Python and NumPy: no machine learning framework and no automatic differentiation. I wanted to understand how a neural network actually learns, so I built every part myself with an AI coding assistant and derived backpropagation by hand.
+I wrote a handwritten digit classifier with only Python and NumPy: no machine learning framework and no automatic differentiation. I wanted to understand how a neural network actually learns, so I derived every part of the math by hand, including backpropagation.
+
+I built it with Claude as an AI coding assistant. I reviewed and tested the code it wrote, and I derived and checked the math by hand.
 
 `torchvision` is used for one thing only: downloading the raw MNIST files. The data becomes plain NumPy arrays straight away, and PyTorch isn't used anywhere else.
 

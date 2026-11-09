@@ -45,6 +45,8 @@ def extract_fragment(path):
         return text
     body = re.sub(r"^---.*?---\s*", "", text, count=1, flags=re.S)  # frontmatter
     body = re.sub(r"<style.*?</style>", "", body, flags=re.S)
+    # Prettier writes {' '} to keep a space at a line break; Astro renders it as a space.
+    body = re.sub(r"\{\s*(['\"]) \1\s*\}", " ", body)
     m = re.search(r"</h1>", body)
     if not m:
         sys.exit(f"{path}: no <h1> found, so the content start can't be located")
