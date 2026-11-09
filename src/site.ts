@@ -1,9 +1,9 @@
 export const SITE = {
   name: 'Don Yuen',
   url: 'https://donyuen231.github.io',
-  email: '[EMAIL]',
+  email: 'donyuen231@gmail.com',
   github: 'https://github.com/DonYuen231',
-  linkedin: '[LINKEDIN_URL]',
+  linkedin: 'https://www.linkedin.com/in/donyuen231/',
 } as const;
 
 export interface MenuItem {
