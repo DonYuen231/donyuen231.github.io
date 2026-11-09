@@ -1,29 +1,73 @@
----
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Button from '../components/Button.astro';
-import { loadSiteContent } from '../lib/content';
+<p>I'm a computer science graduate from Queens College working toward AI engineering. I built a Claude API app and measured its output with a rubric and a panel of model judges, and I wrote a NumPy neural network from scratch with an AI coding assistant. Before that, I spent five years in hands-on tech support at Best Buy and Geek Squad, diagnosing problems for 15 to 25 clients a day.</p>
 
-const { showNotes } = await loadSiteContent();
----
+<h2>Skills</h2>
+<ul>
+  <li>Languages: Python, JavaScript, TypeScript, Java, SQL</li>
+  <li>AI and machine learning: Claude API (structured outputs), prompt design, LLM evaluation with rubrics and model judges, NumPy, backpropagation, gradient checking</li>
+  <li>Frameworks and tools: Node.js, Astro, React, Git, GitHub Actions, Vitest, Playwright, node:test, AI coding assistants</li>
+  <li>Practices: writing specs for AI-assisted builds, reviewing and testing AI-written code, unit and end-to-end tests, error analysis</li>
+  <li>Hardware: through-hole soldering, basic PCB design in Multisim and Ultiboard, LabVIEW, 8088 and Arduino programming</li>
+  <li>IT support: Windows and macOS, system imaging, basic networking (IP, DNS, Wi-Fi), Office 365, Google Workspace</li>
+  <li>Spoken languages: English, Cantonese, Mandarin</li>
+</ul>
 
-<BaseLayout
-  title="Resume"
-  description="Don Yuen's resume as a web page, with a PDF download."
-  showNotes={showNotes}
->
-  <div class="page prose">
-    <h1>Resume</h1>
-    <div class="download">
-      <Button variant="solid" href="/resume.pdf">
-        Download PDF
-      </Button>
-    </div>
-    <p>[RESUME_CONTENT]</p>
-  </div>
-</BaseLayout>
+<h2>Projects</h2>
 
-<style>
-  .download {
-    margin: 24px 0 32px;
-  }
-</style>
+<h3>Historic Photo Explorer</h3>
+<p>Node.js, Claude API, Library of Congress API · <a href="/projects/historic-photo-explorer/">Project page</a> · <a href="https://github.com/DonYuen231/historic-photo-explorer">GitHub</a></p>
+<ul>
+  <li>Built a Node.js app that finds Library of Congress photos and uses the Claude API to describe them for blind and low-vision readers.</li>
+  <li>Raised the accuracy score from 4.45 to 4.90 out of 5 on a 20-photo rubric by adding low-resolution image detection and a stricter prompt. On 150 px thumbnails, accuracy rose from 3.4 to 4.6.</li>
+  <li>Scored descriptions on 4 criteria with 4 model judges, then hand-checked the 40 scores where they differed by 2+ points.</li>
+  <li>Used only Node.js core modules, requested JSON-schema structured outputs, and escaped all model output.</li>
+</ul>
+
+<h3>MNIST Neural Network from Scratch</h3>
+<p>Python, NumPy · <a href="/projects/mnist-neural-network/">Project page</a> · <a href="https://github.com/DonYuen231/mnist-neural-network">GitHub</a></p>
+<ul>
+  <li>Built a 784-128-64-10 ReLU network in NumPy with no ML framework, working with an AI coding assistant while deriving backpropagation by hand.</li>
+  <li>Verified the hand-derived gradients against centered finite differences, with a relative error of about 1e-9.</li>
+  <li>Reached 98.32% accuracy on the 10,000-image MNIST test set, used once after tuning on a separate validation set.</li>
+  <li>Swept learning rate, width, and batch size over 3 seeds, which exposed a learning rate that fell to about 12% on one seed.</li>
+</ul>
+
+<h2>Experience</h2>
+
+<h3>Store Manager, Fuzzy Paws Tavern</h3>
+<p>May 2024 – May 2025 · Queens, NY</p>
+<ul>
+  <li>Managed daily operations for a pet grooming and boarding boutique and led 1 full-time and 2 part-time staff.</li>
+  <li>Expanded the store's capacity for large dogs, a premium service that brought in 15 to 20 percent of total revenue.</li>
+  <li>Ran the store's CRM and back-end systems, including client records and appointment history.</li>
+  <li>Standardized service procedures and client communications, and resolved client escalations.</li>
+</ul>
+
+<h3>Consultation Agent, Geek Squad (Best Buy)</h3>
+<p>Aug 2019 – Jan 2024 · New York, NY · Part-time, then full-time for the final 6 months</p>
+<ul>
+  <li>Diagnosed hardware and software problems for 15 to 25 clients a day from client reports and hands-on testing.</li>
+  <li>Repaired devices, including component swaps and soldering, and logged precise service orders in Apple GSX and NOVA.</li>
+  <li>Troubleshot VPN and network problems, and helped clients spot scams and recover after being scammed.</li>
+  <li>Trained 4 to 6 new hires and handled escalated client concerns under time pressure.</li>
+</ul>
+
+<h3>Sales Associate (Computers), Best Buy</h3>
+<p>Jul 2018 – Aug 2019 · New York, NY</p>
+<ul>
+  <li>Advised customers on hardware specs and system requirements and matched them to the right products.</li>
+</ul>
+
+<h2>Education</h2>
+
+<h3>Bachelor of Science in Computer Science, Queens College (CUNY)</h3>
+<p>Jan 2024 – Aug 2026 · Queens, NY</p>
+<p>Relevant coursework: Database Systems, Data Structures and Algorithms, Deep Learning and Systems</p>
+
+<h3>Associate in Applied Science, Computer Engineering Technology, Queensborough Community College (CUNY)</h3>
+<p>Aug 2020 – Jan 2023 · Queens, NY</p>
+
+<h2>Certifications</h2>
+<ul>
+  <li>Apple Certified iOS Technician (ACiT), Apple, 2019</li>
+  <li>Apple Service Fundamentals, Apple, 2019</li>
+</ul>
