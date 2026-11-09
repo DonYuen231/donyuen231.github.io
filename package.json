@@ -13,8 +13,8 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "check:placeholders": "node -e \"console.log('check:placeholders: not yet implemented (Task 8)')\"",
-    "check:links": "node -e \"console.log('check:links: not yet implemented (Task 8)')\""
+    "check:placeholders": "node scripts/check-placeholders.mjs",
+    "check:links": "linkinator \"**/*.html\" --recurse --server-root dist --retry --timeout 10000 --skip \"^mailto:\" --skip \"linkedin[.]com\" --skip \"^https://donyuen231[.]github[.]io\""
   },
   "dependencies": {
     "@astrojs/mdx": "8.1.3",
