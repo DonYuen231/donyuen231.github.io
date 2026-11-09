@@ -1,0 +1,148 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Button from './Button.astro';
+import ProblemApproachResult from './ProblemApproachResult.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  variant: 'full' | 'compact';
+}
+
+const { project, variant } = Astro.props;
+const { id, data } = project;
+const label = `Entry ${String(data.entry).padStart(2, '0')}`;
+const hasDemo = variant === 'full' && Astro.slots.has('default');
+---
+
+<article class={`card ${variant}`}>
+  <header class="strip" transition:name={`project-${id}-header`}>
+    <span class="entry">{label}</span>
+    <ul class="tags">
+      {data.tags.map((tag) => (
+        <li>{tag}</li>
+      ))}
+    </ul>
+    <span class="year">{data.year}</span>
+  </header>
+  <div class:list={['body', { 'has-demo': hasDemo }]}>
+    <div class="text">
+      <h3 transition:name={`project-${id}-title`}>
+        <a href={`/projects/${id}/`}>{data.title}</a>
+      </h3>
+      {variant === 'full' ? (
+        <>
+          <ProblemApproachResult
+            problem={data.problem}
+            approach={data.approach}
+            result={data.result}
+          />
+          <div class="actions">
+            <Button variant="solid" href={`/projects/${id}/`}>
+              Open project
+            </Button>
+            <Button variant="outline" href={data.repo}>
+              View the code
+            </Button>
+          </div>
+        </>
+      ) : (
+        <p class="summary">{data.summary}</p>
+      )}
+    </div>
+    {hasDemo && (
+      <div class="demo">
+        <slot />
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .strip {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--divider);
+    font: 400 13px/1.4 var(--font-mono);
+    color: var(--text-muted);
+  }
+  .entry {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1;
+  }
+  .body {
+    display: flex;
+    gap: 32px;
+    padding: 24px;
+  }
+  .text {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .demo {
+    flex: 0 1 420px;
+    min-width: 0;
+  }
+  h3 {
+    margin: 0 0 12px;
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  h3 a {
+    display: inline-block;
+    min-height: 44px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  h3 a:hover {
+    color: var(--amber);
+    text-decoration: underline;
+  }
+  .summary {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--text-soft);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 20px;
+  }
+  @media (max-width: 640px) {
+    .strip {
+      padding: 12px 16px;
+    }
+    .body {
+      flex-direction: column;
+      gap: 20px;
+      padding: 16px;
+    }
+    .demo {
+      order: -1;
+      flex: none;
+    }
+  }
+</style>

@@ -1,0 +1,21 @@
+<aside class="note">
+  <slot />
+</aside>
+
+<style>
+  .note {
+    margin: 24px 0;
+    padding: 16px 20px;
+    border: 2px dashed var(--amber);
+    border-radius: var(--radius-demo);
+    color: var(--text-soft);
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .note :global(p) {
+    margin: 0 0 8px;
+  }
+  .note :global(p:last-child) {
+    margin-bottom: 0;
+  }
+</style>
