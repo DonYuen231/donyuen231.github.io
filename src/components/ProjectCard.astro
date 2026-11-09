@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import CardStrip from './CardStrip.astro';
 import Button from './Button.astro';
 import ProblemApproachResult from './ProblemApproachResult.astro';
 
@@ -10,20 +11,11 @@ interface Props {
 
 const { project, variant } = Astro.props;
 const { id, data } = project;
-const label = `Entry ${String(data.entry).padStart(2, '0')}`;
 const hasDemo = variant === 'full' && Astro.slots.has('default');
 ---
 
 <article class={`card ${variant}`}>
-  <header class="strip" transition:name={`project-${id}-header`}>
-    <span class="entry">{label}</span>
-    <ul class="tags">
-      {data.tags.map((tag) => (
-        <li>{tag}</li>
-      ))}
-    </ul>
-    <span class="year">{data.year}</span>
-  </header>
+  <CardStrip entry={data.entry} tags={data.tags} year={data.year} id={id} />
   <div class:list={['body', { 'has-demo': hasDemo }]}>
     <div class="text">
       <h3 transition:name={`project-${id}-title`}>
@@ -63,29 +55,6 @@ const hasDemo = variant === 'full' && Astro.slots.has('default');
     border: 1px solid var(--card-border);
     border-radius: var(--radius-card);
     overflow: hidden;
-  }
-  .strip {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px 16px;
-    padding: 12px 24px;
-    border-bottom: 1px solid var(--divider);
-    font: 400 13px/1.4 var(--font-mono);
-    color: var(--text-muted);
-  }
-  .entry {
-    color: var(--navy);
-    font-weight: 700;
-  }
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    flex: 1;
   }
   .body {
     display: flex;
@@ -132,9 +101,6 @@ const hasDemo = variant === 'full' && Astro.slots.has('default');
     padding-top: 20px;
   }
   @media (max-width: 640px) {
-    .strip {
-      padding: 12px 16px;
-    }
     .body {
       flex-direction: column;
       gap: 20px;

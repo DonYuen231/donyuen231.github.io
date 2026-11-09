@@ -186,7 +186,7 @@ test('figures numbered', async ({ page, browserName }) => {
 test('card body is not a link', async ({ page }) => {
   await page.goto('/');
   const before = page.url();
-  await mnistCard(page).locator('header').click();
+  await mnistCard(page).locator('.strip').click();
   await page.waitForTimeout(300);
   expect(page.url()).toBe(before);
 });
