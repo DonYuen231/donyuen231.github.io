@@ -1,0 +1,161 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import ProblemApproachResult from '../components/ProblemApproachResult.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  relatedNotes: CollectionEntry<'notes'>[];
+  next: CollectionEntry<'projects'> | null;
+  showNotes: boolean;
+}
+
+const { project, relatedNotes, next, showNotes } = Astro.props;
+const { id, data } = project;
+const label = `Entry ${String(data.entry).padStart(2, '0')}`;
+const hasDemo = data.demo !== 'none';
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.summary}
+  ogImage={data.ogImage}
+  showNotes={showNotes}
+>
+  <article class="page project">
+    <header class="head">
+      <div class="strip" transition:name={`project-${id}-header`}>
+        <span class="entry">{label}</span>
+        <ul class="tags">
+          {data.tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+        <span class="year">{data.year}</span>
+      </div>
+      <h1 transition:name={`project-${id}-title`}>{data.title}</h1>
+    </header>
+
+    {hasDemo && <div id="demo" class="demo-panel" aria-hidden="true" />}
+
+    <div class="par">
+      <ProblemApproachResult
+        problem={data.problem}
+        approach={data.approach}
+        result={data.result}
+      />
+    </div>
+
+    <div class="writeup prose">
+      <slot />
+    </div>
+
+    {relatedNotes.length > 0 && (
+      <section class="prose related" aria-labelledby="related-notes">
+        <h2 id="related-notes">Related notes</h2>
+        <ul>
+          {relatedNotes.map((note) => (
+            <li>
+              <a href={`/notes/${note.id}/`}>{note.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {next && (
+      <nav class="next" aria-label="More projects">
+        <a href={`/projects/${next.id}/`}>
+          <span class="next-label">Next project</span>
+          <span class="next-title">{next.data.title}</span>
+        </a>
+      </nav>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .head {
+    margin-bottom: 32px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .strip {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--divider);
+    font: 400 13px/1.4 var(--font-mono);
+    color: var(--text-muted);
+  }
+  .entry {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1;
+  }
+  h1 {
+    padding: 24px;
+    font-size: clamp(32px, 6vw, 52px);
+    line-height: 1.1;
+    overflow-wrap: break-word;
+  }
+  #demo {
+    margin-bottom: 32px;
+  }
+  .par {
+    max-width: 72ch;
+    margin-bottom: 8px;
+  }
+  .writeup {
+    counter-reset: fig;
+  }
+  .writeup :global(img) {
+    max-width: 100%;
+    height: auto;
+  }
+  .next {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--divider);
+  }
+  .next a {
+    display: inline-flex;
+    flex-direction: column;
+    min-height: 44px;
+    text-decoration: none;
+  }
+  .next-label {
+    font: 500 13px/1.5 var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .next-title {
+    font-size: 22px;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  @media (max-width: 640px) {
+    .page {
+      padding-top: 24px;
+    }
+    .strip {
+      padding: 12px 16px;
+    }
+    h1 {
+      padding: 16px;
+    }
+  }
+</style>

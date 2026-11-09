@@ -8,7 +8,14 @@ interface Props {
 const { showNotes } = Astro.props;
 const items = menuItems(showNotes);
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => href.startsWith('/') && path === href;
+const SECTIONS = ['/projects/', '/notes/'];
+// Exact match is the current page; inside a section root, the root is current.
+const current = (href: string): 'page' | 'true' | undefined => {
+  if (!href.startsWith('/')) return undefined;
+  if (path === href) return 'page';
+  if (SECTIONS.includes(href) && path.startsWith(href)) return 'true';
+  return undefined;
+};
 ---
 
 <header class="on-dark">
@@ -21,7 +28,7 @@ const isCurrent = (href: string) => href.startsWith('/') && path === href;
         <a
           href={item.href}
           class:list={[{ contact: item.href === '#contact' }]}
-          aria-current={isCurrent(item.href) ? 'page' : undefined}
+          aria-current={current(item.href)}
         >
           {item.label}
         </a>
@@ -77,7 +84,7 @@ const isCurrent = (href: string) => href.startsWith('/') && path === href;
     color: var(--on-dark);
     text-decoration: underline;
   }
-  nav a[aria-current='page'] {
+  nav a[aria-current] {
     color: var(--on-dark);
     text-decoration: underline;
     text-underline-offset: 6px;

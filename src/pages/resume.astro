@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { loadSiteContent } from '../lib/content';
+
+const { showNotes } = await loadSiteContent();
+---
+
+<BaseLayout
+  title="Resume"
+  description="Don Yuen's resume as a web page, with a PDF download."
+  showNotes={showNotes}
+>
+  <div class="page prose">
+    <h1>Resume</h1>
+    <div class="download">
+      <Button variant="solid" href="/resume.pdf">
+        Download PDF
+      </Button>
+    </div>
+    <p>[RESUME_CONTENT]</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .download {
+    margin: 24px 0 32px;
+  }
+</style>

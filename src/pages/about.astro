@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadSiteContent } from '../lib/content';
+
+const { showNotes } = await loadSiteContent();
+---
+
+<BaseLayout
+  title="About"
+  description="About Don Yuen: a software engineer who likes to build things from first principles and make them accessible."
+  showNotes={showNotes}
+>
+  <div class="page prose">
+    <h1>About</h1>
+    <p class="lede">
+      I'm Don Yuen, a software engineer. I like to understand a system all the
+      way down, then build something other people can use.
+    </p>
+    <p>
+      I took computer science courses at CUNY. My final project for CS 355
+      became the Historic Photo Explorer: a Node.js server, built only from
+      Node's core modules, that searches the Library of Congress and asks the
+      Claude API to describe photos for blind and visually impaired readers.
+    </p>
+    <p>
+      To learn how machine learning works underneath the frameworks, I wrote a
+      neural network in plain NumPy, derived backpropagation by hand, and
+      checked it against numerical gradients before trusting a single result.
+    </p>
+
+    <h2>The engineering I like</h2>
+    <ul>
+      <li>
+        <strong>Working from first principles.</strong> Writing the parts myself
+        until I know what each one does, then deciding what to depend on.
+      </li>
+      <li>
+        <strong>Measuring before claiming.</strong> Repeating runs across seeds,
+        scoring outputs against a rubric, and saying plainly what a number does
+        and doesn't show.
+      </li>
+      <li>
+        <strong>Accessibility.</strong> Building for people who use screen
+        readers, keyboards and small phones, not only for the default case.
+      </li>
+      <li>
+        <strong>APIs and servers.</strong> Keeping keys on the server, escaping
+        everything that reaches the page, and handling timeouts and errors in
+        one place.
+      </li>
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .lede {
+    margin-top: 16px;
+    font-size: clamp(21px, 3.4vw, 26px);
+    line-height: 1.35;
+  }
+</style>

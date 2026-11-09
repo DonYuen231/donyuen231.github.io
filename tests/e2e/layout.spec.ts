@@ -33,3 +33,15 @@ test('menu is one row at 360px', async ({ page }) => {
     .evaluateAll((els) => els.map((e) => e.getBoundingClientRect().top));
   expect(new Set(ys).size).toBe(1);
 });
+
+test('Work is current on the projects section', async ({ page }) => {
+  const work = page
+    .getByRole('navigation', { name: 'Main' })
+    .getByRole('link', { name: 'Work' });
+  await page.goto('/projects/');
+  await expect(work).toHaveAttribute('aria-current', 'page');
+  await page.goto('/projects/mnist-neural-network/');
+  await expect(work).toHaveAttribute('aria-current', 'true');
+  await page.goto('/about/');
+  await expect(work).not.toHaveAttribute('aria-current');
+});

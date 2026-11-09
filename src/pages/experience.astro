@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadSiteContent } from '../lib/content';
+
+const { showNotes } = await loadSiteContent();
+---
+
+<BaseLayout
+  title="Experience"
+  description="Don Yuen's work history and education."
+  showNotes={showNotes}
+>
+  <div class="page prose">
+    <h1>Experience</h1>
+    <p class="lede">Work history and education.</p>
+    <p>[RESUME_CONTENT]</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .lede {
+    margin-top: 16px;
+    font-size: clamp(21px, 3.4vw, 26px);
+    line-height: 1.35;
+  }
+</style>

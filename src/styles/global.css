@@ -82,3 +82,48 @@ a:hover {
     scroll-behavior: auto !important;
   }
 }
+
+/* Page container: content width and side gutters. */
+.page {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 48px var(--gutter) 0;
+}
+
+/* Running text: write-ups, About, Privacy and similar pages. */
+.prose {
+  max-width: 72ch;
+}
+.prose h2 {
+  margin: 40px 0 12px;
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 16px;
+}
+.prose li {
+  margin-bottom: 8px;
+}
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  overflow-wrap: anywhere;
+}
+.prose pre {
+  overflow-x: auto;
+  padding: 16px;
+  background: var(--navy);
+  color: var(--on-dark);
+  border-radius: var(--radius-demo);
+}
+.prose a {
+  overflow-wrap: anywhere;
+}
+
+/* Demo panel shell (navy, 6px radius). Demos mount inside it. */
+.demo-panel {
+  min-height: 320px;
+  background: var(--navy);
+  border-radius: var(--radius-demo);
+}
