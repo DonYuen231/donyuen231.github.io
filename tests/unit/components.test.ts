@@ -40,7 +40,7 @@ describe('ProjectCard', () => {
     expect(html).toContain('Open project');
     expect(html).toContain('View the code');
     expect(html).toMatch(/data-astro-transition-scope="[^"]+"/);
-    expect(html.trim()).not.toMatch(/^<a[s>]/);
+    expect(html.trim()).not.toMatch(/^<a[\s>]/);
     expect(html.match(/data-astro-transition-scope=/g)).toHaveLength(2);
   });
 
