@@ -5,6 +5,8 @@ const REPO = 'https://github.com/DonYuen231/mnist-neural-network';
 
 const card = (page: Page) => page.locator('.mnist-card');
 const guess = (page: Page) => card(page).locator('.mnist-guess');
+// The visible "7 · 98%" text (the spoken version lives in a sr-only span).
+const visibleGuess = (page: Page) => card(page).locator('.mnist-guess-visible');
 const canvas = (page: Page) => card(page).locator('canvas');
 
 /** Scroll the card into view (client:visible) and wait for the model. */
@@ -57,14 +59,14 @@ test('sample button shows the right guess', async ({ page }) => {
   await page.goto('/');
   await ready(page);
   await card(page).getByRole('button', { name: 'Sample 7' }).click();
-  await expect(guess(page)).toHaveText(/^7 · \d{1,3}%$/);
+  await expect(visibleGuess(page)).toHaveText(/^7 · \d{1,3}%$/);
 });
 
 test('drawing shows a guess', async ({ page }) => {
   await page.goto('/');
   await ready(page);
   await drawLine(page, [0.5, 0.2], [0.5, 0.8]);
-  await expect(guess(page)).toHaveText(GUESS);
+  await expect(visibleGuess(page)).toHaveText(GUESS);
   expect(await canvasAlphaSum(canvas(page))).toBeGreaterThan(0);
 });
 
@@ -100,7 +102,7 @@ test('stroke leaving the canvas ends cleanly', async ({ page }) => {
   await page.mouse.move(box.x + box.width / 2, box.y + 10, { steps: 6 });
   expect(await canvasAlphaSum(canvas(page))).toBe(0);
   await drawLine(page, [0.5, 0.2], [0.5, 0.8]);
-  await expect(guess(page)).toHaveText(GUESS);
+  await expect(visibleGuess(page)).toHaveText(GUESS);
   expect(errors).toEqual([]);
 });
 
@@ -108,7 +110,7 @@ test('clear', async ({ page }) => {
   await page.goto('/');
   await ready(page);
   await card(page).getByRole('button', { name: 'Sample 4' }).click();
-  await expect(guess(page)).toHaveText(GUESS);
+  await expect(visibleGuess(page)).toHaveText(GUESS);
   await card(page).getByRole('button', { name: 'Clear' }).click();
   await expect(guess(page)).toHaveText('');
   expect(await canvasAlphaSum(canvas(page))).toBe(0);
@@ -152,7 +154,7 @@ test('works after view-transition navigation', async ({ page }) => {
   await expect(page.locator('h1')).toHaveText('Don Yuen');
   await ready(page);
   await card(page).getByRole('button', { name: 'Sample 3' }).click();
-  await expect(guess(page)).toHaveText(/^3 · \d{1,3}%$/);
+  await expect(visibleGuess(page)).toHaveText(/^3 · \d{1,3}%$/);
   expect(errors).toEqual([]);
 });
 
@@ -175,6 +177,6 @@ test('touch drawing on phone', async ({ page, browserName }, testInfo) => {
   for (let i = 1; i <= 12; i++)
     await touch('touchMove', box.y + box.height * (0.2 + (0.6 * i) / 12));
   await touch('touchEnd', 0);
-  await expect(guess(page)).toHaveText(GUESS);
+  await expect(visibleGuess(page)).toHaveText(GUESS);
   expect(await canvasAlphaSum(canvas(page))).toBeGreaterThan(0);
 });

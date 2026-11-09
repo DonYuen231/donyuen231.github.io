@@ -1,4 +1,11 @@
-import { useEffect, useId, useRef, useState, type PointerEvent } from 'react';
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type PointerEvent,
+  type ReactNode,
+} from 'react';
 import { forward, loadModel, topGuess, type Model } from './model';
 import { inkFromAlpha, preprocess } from './preprocess';
 import './mnist-card.css';
@@ -20,8 +27,12 @@ interface Props {
   fullDemoHref?: string | null;
 }
 
+type Source = 'drawing' | 'sample';
+
 type Result =
-  { kind: 'guess'; digit: number; p: number } | { kind: 'empty' } | null;
+  | { kind: 'guess'; digit: number; p: number; source: Source }
+  | { kind: 'empty' }
+  | null;
 
 const SIZE = 280; // logical canvas size in CSS pixels
 const GRID = 28;
@@ -131,7 +142,7 @@ export default function MnistCard({
     }
   }
 
-  async function guess() {
+  async function guess(source: Source = 'drawing') {
     const ink = inkRef.current;
     if (!ink) return;
     const id = ++requestRef.current;
@@ -145,7 +156,7 @@ export default function MnistCard({
       const { model } = await loadDemo();
       if (id !== requestRef.current) return;
       const { digit, p } = topGuess(forward(model, input.output).probs);
-      setResult({ kind: 'guess', digit, p });
+      setResult({ kind: 'guess', digit, p, source });
     } catch {
       // The load failure is already shown by the effect above.
     }
@@ -178,7 +189,7 @@ export default function MnistCard({
       }
       ctx.globalAlpha = 1;
     }
-    void guess();
+    void guess('sample');
   }
 
   function clear() {
@@ -244,11 +255,23 @@ export default function MnistCard({
     );
   }
 
-  let status = '';
+  let status: ReactNode = '';
   if (phase === 'loading') status = 'Loading model…';
   else if (result?.kind === 'empty') status = 'Draw a digit first';
-  else if (result?.kind === 'guess')
-    status = `${result.digit} · ${Math.round(result.p * 100)}%`;
+  else if (result?.kind === 'guess') {
+    const pct = Math.round(result.p * 100);
+    const from = result.source === 'sample' ? 'Sample' : 'Your drawing';
+    status = (
+      <>
+        <span className="mnist-guess-visible" aria-hidden="true">
+          {`${result.digit} · ${pct}%`}
+        </span>
+        <span className="mnist-sr-only">
+          {`${from}: top guess ${result.digit}, ${pct} percent`}
+        </span>
+      </>
+    );
+  }
 
   return (
     <div className="mnist-card on-dark" data-state={phase}>
