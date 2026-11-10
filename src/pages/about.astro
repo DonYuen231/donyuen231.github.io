@@ -7,48 +7,54 @@ const { showNotes } = await loadSiteContent();
 
 <BaseLayout
   title="About"
-  description="About Don Yuen: a software engineer who likes to build things from first principles and make them accessible."
+  description="About Don Yuen: a computer science graduate who builds LLM applications, evaluates their output, and knows the math underneath."
   showNotes={showNotes}
 >
   <div class="page prose">
     <h1>About</h1>
     <p class="lede">
-      I'm Don Yuen, a software engineer. I like to understand a system all the
-      way down, then build something other people can use.
+      I'm Don Yuen, a computer science graduate building toward AI engineering.
+      I care most about whether a model's output can be trusted.
     </p>
     <p>
-      I took computer science courses at CUNY. My final project for a CS class
-      became the Historic Photo Explorer: a Node.js server, built only from
-      Node's core modules, that searches the Library of Congress and asks the
-      Claude API to describe photos for blind and visually impaired readers.
+      My Historic Photo Explorer is a Node.js app that finds Library of Congress
+      photos and asks Claude to describe them for blind and low-vision readers.
+      It requests JSON-schema structured outputs and escapes everything the
+      model returns before it reaches the page. To judge the descriptions, I
+      wrote a rubric, had four other models grade them blind, and hand-checked
+      every score where they disagreed by two points or more. That evaluation
+      found the real failure: 150 px thumbnails. Fixing it lifted accuracy on
+      those photos from 3.4 to 4.6.
     </p>
     <p>
-      To learn how machine learning works underneath the frameworks, I wrote a
-      neural network in plain NumPy, derived backpropagation by hand, and
-      checked it against numerical gradients before trusting a single result.
+      I also wanted to understand training underneath the frameworks. With an AI
+      coding assistant, I built a 784-128-64-10 network in NumPy and derived
+      backpropagation by hand. I swept learning rate, width, and batch size
+      across three seeds before choosing settings, and it reached 98.32% test
+      accuracy.
     </p>
 
-    <h2>The engineering I like</h2>
+    <h2>Skills I use</h2>
     <ul>
       <li>
-        <strong>Working from first principles.</strong> Writing the parts myself
-        until I know what each one does, then deciding what to depend on.
+        <strong>LLM application work:</strong> the Claude API, structured
+        outputs, and prompt design driven by evaluation results.
       </li>
       <li>
-        <strong>Measuring before claiming.</strong> Repeating runs across seeds,
-        scoring outputs against a rubric, and saying plainly what a number does
-        and doesn't show.
+        <strong>Evaluation:</strong> rubrics, model-as-judge panels, agreement
+        checks against human scores, and clear limits on what a score means.
       </li>
       <li>
-        <strong>Accessibility.</strong> Building for people who use screen
-        readers, keyboards and small phones, not only for the default case.
+        <strong>ML fundamentals:</strong> backpropagation, gradient checking,
+        and controlled experiments across seeds.
       </li>
       <li>
-        <strong>APIs and servers.</strong> Keeping keys on the server, escaping
-        everything that reaches the page, and handling timeouts and errors in
-        one place.
+        <strong>Shipping:</strong> TypeScript, Python, Node.js, and automated
+        tests with CI. I build with AI coding assistants and review and test
+        their code.
       </li>
     </ul>
+    <p>I'm looking for AI engineering roles.</p>
   </div>
 </BaseLayout>
 
