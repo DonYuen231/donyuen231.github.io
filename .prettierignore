@@ -1,0 +1,11 @@
+dist/
+.astro/
+node_modules/
+.superpowers/
+docs/
+package-lock.json
+playwright-report/
+test-results/
+.lighthouseci/
+tests/fixtures/
+public/models/

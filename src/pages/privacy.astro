@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadSiteContent } from '../lib/content';
+
+const { showNotes } = await loadSiteContent();
+---
+
+<BaseLayout
+  title="Privacy"
+  description="What this site does and doesn't collect: no cookies, no tracking, and hosting on GitHub Pages."
+  showNotes={showNotes}
+>
+  <div class="page prose">
+    <h1>Privacy</h1>
+    <ul>
+      <li>
+        This site sets no cookies and doesn't collect personal data itself.
+      </li>
+      <li>
+        The fonts are served from this site, and there are no tracking embeds or
+        social widgets.
+      </li>
+      <li>The demos store nothing on your device.</li>
+      <li>
+        The site is hosted on GitHub Pages. GitHub logs visitors' IP addresses
+        for security. See the{' '}
+        <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">
+          GitHub General Privacy Statement
+        </a>
+        .
+      </li>
+    </ul>
+
+    <h2>Licenses</h2>
+    <p>
+      The site's code is available under the MIT license. The written content,
+      including the project write-ups, notes and About text, is all rights
+      reserved.
+    </p>
+    <p>This page is general information, not legal advice.</p>
+  </div>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+import { inlineMarkdown } from '../lib/inline-markdown';
+
+interface Props {
+  problem: string;
+  approach: string;
+  result: string;
+}
+
+const { problem, approach, result } = Astro.props;
+const rows = [
+  ['Problem', problem],
+  ['Approach', approach],
+  ['Result', result],
+] as const;
+---
+
+<dl class="par">
+  {rows.map(([label, text]) => (
+    <div class="row">
+      <dt>{label}</dt>
+      <dd set:html={inlineMarkdown(text)} />
+    </div>
+  ))}
+</dl>
+
+<style>
+  .par {
+    margin: 0;
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    padding: 8px 0;
+  }
+  dt {
+    flex: 0 0 110px;
+    font: 500 13px/1.5 var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding-top: 3px;
+  }
+  dd {
+    flex: 1 1 0;
+    min-width: 260px;
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+</style>

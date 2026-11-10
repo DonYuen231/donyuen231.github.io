@@ -1,0 +1,76 @@
+---
+title: 'A neural network written from scratch'
+entry: 1
+year: 2026
+summary: 'MNIST digit classifier in NumPy with hand-derived backprop.'
+tags: ['python', 'numpy']
+problem: 'Classify handwritten digits without using an ML framework.'
+approach: 'NumPy only. Backpropagation derived by hand and checked against numerical gradients.'
+result: '**98.32%** on the 10,000-image MNIST test set.'
+demo: 'mnist'
+featured: true
+repo: 'https://github.com/DonYuen231/mnist-neural-network'
+draft: false
+---
+
+import Figure from '../../components/Figure.astro';
+import trainingCurves from '../../assets/projects/mnist/training_curves.png';
+import confusionMatrix from '../../assets/projects/mnist/confusion_matrix.png';
+import misclassified from '../../assets/projects/mnist/misclassified.png';
+
+## Overview
+
+I wrote a handwritten digit classifier with only Python and NumPy: no machine learning framework and no automatic differentiation. I wanted to understand how a neural network actually learns, so I derived every part of the math by hand, including backpropagation.
+
+I built it with Claude as an AI coding assistant. I reviewed and tested the code it wrote, and I derived and checked the math by hand.
+
+`torchvision` is used for one thing only: downloading the raw MNIST files. The data becomes plain NumPy arrays straight away, and PyTorch isn't used anywhere else.
+
+## How it works
+
+- **Network.** A `[784, 128, 64, 10]` fully connected network with ReLU and He initialization. Each 28×28 image is flattened into 784 values.
+- **Loss.** Softmax with cross-entropy, computed through log-softmax so it stays stable for extreme values.
+- **Backpropagation.** Derived by hand with the chain rule for every layer. I checked it against centered finite differences: the two gradients agree to a relative error of about 1e-9.
+- **Training.** Mini-batch SGD with the data shuffled every epoch, tracking loss and train and validation accuracy.
+- **Choosing settings.** I swept learning rate, hidden layer width and batch size one at a time, each across 3 seeds. The spread across seeds shows how much a score moves by chance, so a smaller difference doesn't count as evidence. A learning rate of 1.0 looked fine with one seed (95.6%) but collapsed to 12% with another.
+- **Final settings:** learning rate 0.1, batch size 16, 20 epochs. The test set was used exactly once, after every setting had been chosen on a separate validation set.
+
+## Results
+
+**98.32% accuracy on the 10,000-image MNIST test set** (168 mistakes). That is test-set accuracy on MNIST's own scanned digits. Digits you draw yourself, like in the demo above, are usually harder for the network, because they don't look quite like the images it trained on.
+
+Validation accuracy was also 98.32%. Since no decision was made using the test set, that match suggests choosing settings on the validation set didn't overfit to it.
+
+<Figure
+  src={trainingCurves}
+  alt="Two line charts over 20 epochs. Left: training loss falls to nearly 0, while validation loss is lowest at epoch 7 and then rises slightly, with spikes at epochs 12 and 15. Right: training accuracy reaches 100% by epoch 16 and validation accuracy levels off near 98.3%."
+  caption="Loss and accuracy over 20 epochs. Validation loss is lowest at epoch 7, but validation accuracy keeps improving to about 98.3%."
+/>
+
+The curves show overfitting in the loss: by epoch 16 the network gets every training image right. Validation accuracy still improved, because the network got more images right overall while becoming very confident on the few it still missed. I chose 20 epochs to land in the flat, stable stretch instead of on one lucky epoch.
+
+<Figure
+  src={confusionMatrix}
+  alt="A 10 by 10 grid of true digit against predicted digit for the test set. Most counts sit on the diagonal. The largest off-diagonal counts are 4 predicted as 9 (10) and 9 predicted as 4 (9)."
+  caption="Confusion matrix on the test set, built with a plain NumPy loop. Its off-diagonal cells add up to the same 168 mistakes."
+/>
+
+The most common mistakes are ones people make too: 4 → 9 (10), 9 → 4 (9), then 5 → 3, 9 → 3 and 7 → 2. Per-digit accuracy ranges from 99.2% for 0 and 1 down to 97.1% for 9.
+
+<Figure
+  src={misclassified}
+  alt="A grid of 20 handwritten test digits the network got wrong, each labeled with the true digit, the prediction and the network's confidence. Several are labeled 100% sure."
+  caption="The first 20 misclassified test digits, in test-set order, not hand-picked."
+/>
+
+Most of these are ambiguous handwriting, like a 4 with a closed top. A few are clear digits it should have gotten right, such as two readable 9s called 3. It is often very confident when wrong: 6 of these 20 say 100% sure.
+
+## What I'd change
+
+- **Build a CNN version to compare against.** A convolutional network looks at nearby pixels together, which should help with the shape confusions above. I'm aiming for about 99%.
+- **Look at the learning rate for batch size 16.** The spikes at epochs 12 and 15 look like bad steps from a learning rate that's a bit high for that batch size.
+
+## Links
+
+- [Code on GitHub](https://github.com/DonYuen231/mnist-neural-network), with the training, experiment and evaluation scripts.
+- The [MNIST dataset](http://yann.lecun.com/exdb/mnist/) is by Yann LeCun, Corinna Cortes and Christopher J.C. Burges.

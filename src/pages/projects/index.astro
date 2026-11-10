@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { loadSiteContent } from '../../lib/content';
+
+const { projects, showNotes } = await loadSiteContent();
+---
+
+<BaseLayout
+  title="Work"
+  description="Every project Don Yuen has published, newest first, with a short summary of each."
+  showNotes={showNotes}
+>
+  <div class="page">
+    <h1>Work</h1>
+    <p class="lede">
+      Every project I've published, newest first. Each one has a write-up, and
+      some have a demo you can try.
+    </p>
+    <h2>All projects</h2>
+    <ul class="list">
+      {projects.map((project) => (
+        <li>
+          <ProjectCard project={project} variant="compact" />
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .lede {
+    max-width: 60ch;
+    margin: 16px 0 40px;
+    font-size: clamp(19px, 2.6vw, 22px);
+    line-height: 1.4;
+    color: var(--text-soft);
+  }
+  .list {
+    display: grid;
+    gap: 24px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

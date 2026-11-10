@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadSiteContent } from '../lib/content';
+
+const { showNotes } = await loadSiteContent();
+---
+
+<BaseLayout
+  title="Experience"
+  description="Don Yuen's work history and education."
+  showNotes={showNotes}
+>
+  <div class="page prose">
+    <h1>Experience</h1>
+    <p class="lede">Work history and education.</p>
+    <h2>Experience</h2>
+    <h3>Store Manager, Fuzzy Paws Tavern</h3>
+    <p>May 2024 – May 2025 · Queens, NY</p>
+    <ul>
+      <li>
+        Managed daily operations for a pet grooming and boarding boutique and
+        led 1 full-time and 2 part-time staff.
+      </li>
+      <li>
+        Expanded the store's capacity for large dogs, a premium service that
+        brought in 15 to 20 percent of total revenue.
+      </li>
+      <li>
+        Ran the store's CRM and back-end systems, including client records and
+        appointment history.
+      </li>
+      <li>
+        Standardized service procedures and client communications, and resolved
+        client escalations.
+      </li>
+    </ul>
+    <h3>Consultation Agent, Geek Squad (Best Buy)</h3>
+    <p>
+      Aug 2019 – Jan 2024 · New York, NY · Part-time, then full-time for the
+      final 6 months
+    </p>
+    <ul>
+      <li>
+        Diagnosed hardware and software problems for 15 to 25 clients a day from
+        client reports and hands-on testing.
+      </li>
+      <li>
+        Repaired devices, including component swaps and soldering, and logged
+        precise service orders in Apple GSX and NOVA.
+      </li>
+      <li>
+        Troubleshot VPN and network problems, and helped clients spot scams and
+        recover after being scammed.
+      </li>
+      <li>
+        Trained 4 to 6 new hires and handled escalated client concerns under
+        time pressure.
+      </li>
+    </ul>
+    <h3>Sales Associate (Computers), Best Buy</h3>
+    <p>Jul 2018 – Aug 2019 · New York, NY</p>
+    <ul>
+      <li>
+        Advised customers on hardware specs and system requirements and matched
+        them to the right products.
+      </li>
+    </ul>
+
+    <h2>Education</h2>
+    <h3>Bachelor of Science in Computer Science, Queens College (CUNY)</h3>
+    <p>Jan 2024 – Aug 2026 · Queens, NY</p>
+    <p>
+      Relevant coursework: Database Systems, Data Structures and Algorithms,
+      Deep Learning and Systems
+    </p>
+    <h3>
+      Associate in Applied Science, Computer Engineering Technology,
+      Queensborough Community College (CUNY)
+    </h3>
+    <p>Aug 2020 – Jan 2023 · Queens, NY</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .lede {
+    margin-top: 16px;
+    font-size: clamp(21px, 3.4vw, 26px);
+    line-height: 1.35;
+  }
+</style>

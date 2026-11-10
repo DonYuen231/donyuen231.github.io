@@ -1,0 +1,50 @@
+---
+interface Props {
+  href?: string;
+  variant: 'solid' | 'outline';
+  type?: 'button' | 'submit';
+}
+
+const { href, variant, type = 'button' } = Astro.props;
+---
+
+{href ? (
+  <a class={`btn ${variant}`} href={href}>
+    <slot />
+  </a>
+) : (
+  <button class={`btn ${variant}`} type={type}>
+    <slot />
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 24px;
+    border: 2px solid var(--navy);
+    border-radius: 0;
+    font: 600 16px/1 var(--font-sans);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .solid,
+  .solid:hover {
+    background: var(--navy);
+    color: var(--on-dark);
+  }
+  .outline,
+  .outline:hover {
+    background: transparent;
+    color: var(--navy);
+  }
+  .solid:hover {
+    background: var(--demo-surface);
+  }
+  .outline:hover {
+    background: var(--divider);
+  }
+</style>

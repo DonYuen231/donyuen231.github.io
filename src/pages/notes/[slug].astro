@@ -1,0 +1,56 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { loadSiteContent } from '../../lib/content';
+
+export const getStaticPaths = (async () => {
+  const { notes } = await loadSiteContent();
+  return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+}) satisfies GetStaticPaths;
+
+const { note } = Astro.props;
+const { showNotes } = await loadSiteContent();
+const project = note.data.project ? await getEntry(note.data.project) : null;
+const linkedProject = project && !project.data.draft ? project : null;
+const { Content } = await render(note);
+const dateFormat = new Intl.DateTimeFormat('en-US', {
+  dateStyle: 'long',
+  timeZone: 'UTC',
+});
+---
+
+<BaseLayout
+  title={note.data.title}
+  description={note.data.summary}
+  showNotes={showNotes}
+>
+  <article class="page prose">
+    <h1>{note.data.title}</h1>
+    <p class="meta">
+      <time datetime={note.data.date.toISOString().slice(0, 10)}>
+        {dateFormat.format(note.data.date)}
+      </time>
+    </p>
+    <Content />
+    {linkedProject && (
+      <p class="project">
+        Project:{' '}
+        <a href={`/projects/${linkedProject.id}/`}>
+          {linkedProject.data.title}
+        </a>
+      </p>
+    )}
+  </article>
+</BaseLayout>
+
+<style>
+  .meta {
+    margin-top: 12px;
+    font: 400 14px/1.5 var(--font-mono);
+    color: var(--text-muted);
+  }
+  .project {
+    margin-top: 40px;
+  }
+</style>

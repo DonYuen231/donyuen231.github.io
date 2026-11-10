@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BackgroundNote from '../components/BackgroundNote.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import MnistCard from '../components/mnist/MnistCard';
+import { featured, loadSiteContent } from '../lib/content';
+
+const { projects, showNotes } = await loadSiteContent();
+const selected = featured(projects);
+---
+
+<BaseLayout
+  title="Don Yuen"
+  description="Don Yuen builds and evaluates LLM applications. See an evaluated Claude API app and a neural network that runs in your browser."
+  showNotes={showNotes}
+>
+  <div class="page">
+    <h1>Don Yuen</h1>
+    <p class="intro">
+      I build LLM applications and measure how well they work.
+    </p>
+    <BackgroundNote>
+      <p>
+        My Historic Photo Explorer sends archive photos to the Claude API and
+        gets back structured descriptions for blind and low-vision readers. A
+        20-photo evaluation with a rubric and four model judges showed where it
+        failed. Detecting low-resolution images and tightening the prompt then
+        raised its accuracy score from 4.45 to 4.90 out of 5. I'm a computer
+        science graduate from Queens College.
+      </p>
+    </BackgroundNote>
+
+    <h2>Selected work</h2>
+    <ul class="cards">
+      {selected.map((project) => (
+        <li>
+          {project.data.demo === 'mnist' ? (
+            <ProjectCard project={project} variant="full">
+              <div id="demo">
+                <MnistCard client:visible codeUrl={project.data.repo} />
+              </div>
+            </ProjectCard>
+          ) : (
+            <ProjectCard project={project} variant="full" />
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>
+
+<style>
+  .intro {
+    max-width: 30ch;
+    margin: 16px 0 0;
+    font-size: clamp(21px, 3.4vw, 26px);
+    line-height: 1.35;
+  }
+  .page :global(.note) {
+    max-width: 72ch;
+  }
+  h2 {
+    margin-top: 56px;
+  }
+  .cards {
+    display: grid;
+    gap: 32px;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

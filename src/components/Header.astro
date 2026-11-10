@@ -1,0 +1,98 @@
+---
+import { menuItems } from '../site';
+
+interface Props {
+  showNotes: boolean;
+}
+
+const { showNotes } = Astro.props;
+const items = menuItems(showNotes);
+const path = Astro.url.pathname;
+const SECTIONS = ['/projects/', '/notes/'];
+// Exact match is the current page; inside a section root, the root is current.
+const current = (href: string): 'page' | 'true' | undefined => {
+  if (!href.startsWith('/')) return undefined;
+  if (path === href) return 'page';
+  if (SECTIONS.includes(href) && path.startsWith(href)) return 'true';
+  return undefined;
+};
+---
+
+<header class="on-dark">
+  <div class="bar">
+    <a class="logo" href="/">
+      Don Yuen
+    </a>
+    <nav aria-label="Main">
+      {items.map((item) => (
+        <a
+          href={item.href}
+          class:list={[{ contact: item.href === '#contact' }]}
+          aria-current={current(item.href)}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    background: var(--navy);
+    padding: 8px 0;
+  }
+  .bar {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .logo {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--on-dark);
+    flex: none;
+  }
+  nav {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4px;
+    margin-left: auto;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar {
+    display: none;
+  }
+  nav a {
+    padding: 0 10px;
+    font-size: 15px;
+    color: var(--on-dark-soft);
+  }
+  nav a:hover {
+    color: var(--on-dark);
+    text-decoration: underline;
+  }
+  nav a[aria-current] {
+    color: var(--on-dark);
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+  nav a.contact {
+    color: var(--amber-bright);
+  }
+  nav a:focus-visible {
+    outline-offset: -4px;
+  }
+</style>

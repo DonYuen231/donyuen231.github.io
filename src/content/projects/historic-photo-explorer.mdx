@@ -1,0 +1,49 @@
+---
+title: 'Describing historic photos for blind readers'
+entry: 2
+year: 2026
+summary: 'Node.js app that finds Library of Congress photos and has the Claude API describe them for blind and visually impaired readers.'
+tags: ['node.js', 'claude-api', 'accessibility']
+problem: 'Make historical photographs from the Library of Congress accessible to blind and visually impaired readers.'
+approach: 'A Node.js server with no dependencies searches the archive, downloads the images and asks the Claude API for descriptions as structured JSON.'
+result: 'A stricter prompt and thumbnail detection raised description accuracy from 4.45 to 4.90 out of 5 on a 20-photo rubric.'
+demo: 'none'
+featured: true
+repo: 'https://github.com/DonYuen231/historic-photo-explorer'
+draft: false
+---
+
+## Overview
+
+Historic Photo Explorer describes historical photographs for blind and visually impaired readers. You enter a subject and a place. The server finds matching photos in the Library of Congress archive, sends them to Claude, and returns a page with a written description, an estimated time period and notable details for each photo.
+
+It started as my final project for a CS class at CUNY: a mashup of two APIs using only Node.js core modules, with the requests running one after another. I kept that constraint, so there's nothing to install: only `http`, `https` and `fs`, and callback-style asynchronous code.
+
+## How it works
+
+1. **Search.** The browser sends a subject and location to the Node server. The server queries the public Library of Congress JSON API and keeps the first 5 results that have an image.
+2. **Download.** The server downloads each image, one at a time, and reads its width and height from the header bytes. If the longest side is under 400 pixels, the photo is marked low resolution.
+3. **Describe.** All 5 images go to the Claude API in one request, each labeled with its catalog title and date. The API key stays on the server and never reaches the browser.
+4. **Render.** The request uses structured outputs, so the answer always has the same JSON shape. The server builds the HTML itself and escapes every value, instead of trusting model-written markup.
+
+Every outbound request goes through one small HTTPS helper that handles redirects, timeouts and errors. Finished results are cached in memory for an hour.
+
+## Results
+
+Unit tests check the code, but they can't tell whether a description is any good. So I picked 20 Library of Congress photos, each with a cataloger's written summary that the app never sees, and scored every description from 1 to 5 for accuracy, completeness, usefulness to a blind reader and match with that summary.
+
+- **Image size caused most of the errors.** Five of the photos were only available as 150-pixel thumbnails, and they produced every serious error in the first round, such as linking a photo to the wrong event.
+- **Two changes fixed the guessing.** The app now detects thumbnails and tells Claude, and a stricter prompt says to name people, places or events only when the catalog title or visible text supports them. Accuracy went from 4.45 to 4.90, and from 3.4 to 4.6 on the thumbnails.
+- **Completeness didn't improve** (4.40 → 4.35). A careful prompt stops made-up details, but it can't make a 150-pixel image show what isn't visible.
+- **Four other models graded the descriptions blind.** Claude's ranked first with every judge, but its lead was clear over only two of the four models.
+
+## What I'd change
+
+- **Test v2 on new photos.** Its rules came from the first round's mistakes on these same 20 photos, so a fair test needs a fresh set.
+- **Cut the filler.** Several v2 descriptions now open with "no text is visible on the image", which a screen-reader user has to sit through.
+- **Test with blind users.** "Usefulness to a blind reader" is my own judgment, not something I've tested with screen-reader users.
+
+## Links
+
+- [Code on GitHub](https://github.com/DonYuen231/historic-photo-explorer), including the full evaluation write-up.
+- Photos and catalog data come from the [Library of Congress](https://www.loc.gov/). Descriptions are written by Claude, an AI model.

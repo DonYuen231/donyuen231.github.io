@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import { loadSiteContent, nextProject } from '../../lib/content';
+
+export const getStaticPaths = (async () => {
+  const { projects } = await loadSiteContent();
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}) satisfies GetStaticPaths;
+
+const { project } = Astro.props;
+const { projects, notes, showNotes } = await loadSiteContent();
+const relatedNotes = notes.filter((n) => n.data.project?.id === project.id);
+const next = nextProject(projects, project.id);
+const { Content } = await render(project);
+---
+
+<ProjectLayout
+  project={project}
+  relatedNotes={relatedNotes}
+  next={next}
+  showNotes={showNotes}
+>
+  <Content />
+</ProjectLayout>

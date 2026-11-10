@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadSiteContent } from '../lib/content';
+
+const { showNotes } = await loadSiteContent();
+---
+
+<BaseLayout
+  title="About"
+  description="About Don Yuen: a computer science graduate who builds LLM applications, evaluates their output, and knows the math underneath."
+  showNotes={showNotes}
+>
+  <div class="page prose">
+    <h1>About</h1>
+    <p class="lede">
+      I'm Don Yuen, a computer science graduate building toward AI engineering.
+      I care most about whether a model's output can be trusted.
+    </p>
+    <p>
+      My Historic Photo Explorer is a Node.js app that finds Library of Congress
+      photos and asks Claude to describe them for blind and low-vision readers.
+      It requests JSON-schema structured outputs and escapes everything the
+      model returns before it reaches the page. To judge the descriptions, I
+      wrote a rubric, had four other models grade them blind, and hand-checked
+      every score where they disagreed by two points or more. That evaluation
+      found the real failure: 150 px thumbnails. Fixing it lifted accuracy on
+      those photos from 3.4 to 4.6.
+    </p>
+    <p>
+      I also wanted to understand training underneath the frameworks. With an AI
+      coding assistant, I built a 784-128-64-10 network in NumPy and derived
+      backpropagation by hand. I swept learning rate, width, and batch size
+      across three seeds before choosing settings, and it reached 98.32% test
+      accuracy.
+    </p>
+
+    <h2>Skills I use</h2>
+    <ul>
+      <li>
+        <strong>LLM application work:</strong> the Claude API, structured
+        outputs, and prompt design driven by evaluation results.
+      </li>
+      <li>
+        <strong>Evaluation:</strong> rubrics, model-as-judge panels, agreement
+        checks against human scores, and clear limits on what a score means.
+      </li>
+      <li>
+        <strong>ML fundamentals:</strong> backpropagation, gradient checking,
+        and controlled experiments across seeds.
+      </li>
+      <li>
+        <strong>Shipping:</strong> TypeScript, Python, Node.js, and automated
+        tests with CI. I build with AI coding assistants and review and test
+        their code.
+      </li>
+    </ul>
+    <p>I'm looking for AI engineering roles.</p>
+  </div>
+</BaseLayout>
+
+<style>
+  .lede {
+    margin-top: 16px;
+    font-size: clamp(21px, 3.4vw, 26px);
+    line-height: 1.35;
+  }
+</style>

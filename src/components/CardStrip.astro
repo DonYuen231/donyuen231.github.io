@@ -1,0 +1,52 @@
+---
+interface Props {
+  entry: number;
+  tags: string[];
+  year: number | string;
+  id: string;
+}
+
+const { entry, tags, year, id } = Astro.props;
+const label = `Entry ${String(entry).padStart(2, '0')}`;
+---
+
+<div class="strip" transition:name={`project-${id}-header`}>
+  <span class="entry">{label}</span>
+  <ul class="tags">
+    {tags.map((tag) => (
+      <li>{tag}</li>
+    ))}
+  </ul>
+  <span class="year">{year}</span>
+</div>
+
+<style>
+  .strip {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--divider);
+    font: 400 13px/1.4 var(--font-mono);
+    color: var(--text-muted);
+  }
+  .entry {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex: 1;
+  }
+  @media (max-width: 640px) {
+    .strip {
+      padding: 12px 16px;
+    }
+  }
+</style>
